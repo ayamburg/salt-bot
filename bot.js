@@ -1,6 +1,8 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const auth = require('./auth.json');
+const util = require('util');
+const exec = util.promisify(require('child_process').exec);
 
 let tree = '199698341280481280'
 
@@ -13,29 +15,37 @@ let regulars = [
     '119955202815164416', //ph3lor
 ]
 
+async function general_event() {
+    const { stdout, stderr } = await exec('python3 general_event.py');
+    console.log(`${stdout}`);
+}
+
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
 });
 
 client.on('message', msg => {
-  if (msg.content === 'ping') {
-    msg.reply('pong');
-  }
+    general_event()
+    if (msg.content === 'ping') {
+        msg.reply('pong');
+    }
 
-  if (msg.content === 'list channels') {
-    const listedChannels = []; 
-    msg.guild.channels.forEach(channel => {
-        listedChannels.push(channel);
-    });
+    if (msg.content === 'list channels') {
+        const listedChannels = []; 
+        msg.guild.channels.forEach(channel => {
+            listedChannels.push(channel);
+        });
 
-    console.log(listedChannels);
-  }
+        console.log(listedChannels);
+    }
 });
 
 client.on('voiceStateUpdate', (oldMember, newMember) => {
     let oldChannel = oldMember.voiceChannel ? oldMember.voiceChannel.id : null;
     let newChannel = newMember.voiceChannel ? newMember.voiceChannel.id : null;
-    if (oldChannel == newChannel || oldChannel != null) return;
+    if (oldChannel == newChannel) return;
+    general_event()
+    if (oldChannel != null) return;
 
     let textChannel = null;
 
