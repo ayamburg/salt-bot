@@ -3,6 +3,7 @@ from sense_hat import SenseHat
 import numpy
 
 sense = SenseHat()
+sense.low_light = True
 
 # sense.set_rotation(270)
 
