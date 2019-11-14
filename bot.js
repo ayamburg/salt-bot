@@ -50,7 +50,7 @@ client.on('voiceStateUpdate', (oldMember, newMember) => {
     let textChannel = null;
 
     newMember.guild.channels.forEach(channel => {
-        if(channel.position === 0 && channel.type === 'text') {
+        if(channel.name === 'salt-bot' && channel.type === 'text') {
             textChannel = channel;
         }
     });
